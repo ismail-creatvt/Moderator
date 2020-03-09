@@ -22,6 +22,7 @@ class BarGraph @JvmOverloads constructor(
         private val DEFAULT_MULTIPLIERS = arrayListOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
     }
 
+    private var newData: List<Pair<Int, Int>>? = null
     private var animationPercentage: Float = 0f
     private var yBaseLine: Int = 0
     private var maxDown: Int = 0
@@ -87,6 +88,12 @@ class BarGraph @JvmOverloads constructor(
         animateBars()
     }
 
+    fun updateData(data:List<Pair<Int, Int>>){
+        this.newData = this.data
+        this.data = data
+        animateBars()
+    }
+
     override fun onAnimationUpdate(animation: ValueAnimator?) {
         animationPercentage = animation?.animatedFraction?:0f
         postInvalidate()
@@ -97,6 +104,7 @@ class BarGraph @JvmOverloads constructor(
             addUpdateListener(this@BarGraph)
             interpolator = AccelerateDecelerateInterpolator()
             duration = 500
+            startDelay = 500
             start()
         }
     }

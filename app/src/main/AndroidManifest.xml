@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/SplashTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".home.HomeActivity"/>
+        <activity android:name=".home.ProfileActivity"></activity>
+        <activity android:name=".home.HomeActivity" />
         <activity android:name=".FacebookDeepLinkActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

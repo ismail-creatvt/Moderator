@@ -43,14 +43,23 @@ class PieChart @JvmOverloads constructor(
             piePaint.color = item.first
             piePath.reset()
             val startAngle = totalAngle
-            val xInner = innerRect.width()/2 * cos(startAngle)
-            val yInner = innerRect.width()/2 * sin(startAngle)
+
+            val xInner = if(startAngle == 0f) {
+                innerRect.right
+            } else {
+                innerRect.centerX() + innerRect.width() / 2 * sin(startAngle)
+            }
+            val yInner = if(startAngle == 0f){
+                innerRect.centerY()
+            } else{
+                innerRect.centerY() + innerRect.width() / 2 * cos(startAngle)
+            }
             piePath.moveTo(xInner, yInner)
             val angle = (item.second.toFloat()/total.toFloat()) * 360f
             piePath.arcTo(innerRect, startAngle, angle, true)
             totalAngle += angle
-            val xOuter = outerRect.width()/2 * cos(angle)
-            val yOuter = outerRect.width()/2 * sin(angle)
+            val xOuter = outerRect.centerX() + outerRect.width()/2 * sin(angle)
+            val yOuter = outerRect.centerY() + outerRect.width()/2 * cos(angle)
             piePath.lineTo(xOuter, yOuter)
             piePath.arcTo(outerRect, angle, -startAngle, true)
             piePath.lineTo(xInner, yInner)

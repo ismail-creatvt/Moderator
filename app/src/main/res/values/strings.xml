@@ -8,5 +8,14 @@
 
     <string name="facebook_app_id">1256214654768069</string>
     <string name="fb_login_protocol_scheme">fb1256214654768069</string>
+    <string name="take_quiz">Take Quiz</string>
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="level_badge">Level Badge</string>
+    <string name="more_options">More Options</string>
+    <string name="level_1">Level 1</string>
+    <string name="ismail_shaikh">Ismail Shaikh</string>
 
 </resources>
