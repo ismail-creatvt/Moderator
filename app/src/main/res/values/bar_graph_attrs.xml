@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BarGraph">
+        <attr name="bg_yAxisColor" format="color"/>
+        <attr name="bg_ytextColor" format="color"/>
+        <attr name="bg_upValuetextColor" format="color"/>
+        <attr name="bg_downValuetextColor" format="color"/>
+        <attr name="bg_upBarColor" format="color"/>
+        <attr name="bg_downBarColor" format="color"/>
+        <attr name="bg_barWidth" format="dimension"/>
+    </declare-styleable>
+</resources>
