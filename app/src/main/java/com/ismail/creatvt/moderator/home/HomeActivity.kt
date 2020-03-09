@@ -21,6 +21,13 @@ class HomeActivity : BaseActivity() {
             Pair(70, 36)
         )
         bar_graph.setData(data)
+
+        val pieData = listOf(
+            Pair(0xfff909f0.toInt(), 10),
+            Pair(0xff99f9f0.toInt(), 30),
+            Pair(0xff9909f9.toInt(), 50)
+        )
+        pie_chart.setData(pieData)
     }
 
 }
