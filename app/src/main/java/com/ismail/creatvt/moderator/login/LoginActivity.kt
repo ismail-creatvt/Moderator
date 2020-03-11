@@ -7,6 +7,7 @@ import com.facebook.CallbackManager
 import com.google.firebase.auth.FirebaseAuth
 import com.ismail.creatvt.moderator.BaseActivity
 import com.ismail.creatvt.moderator.R
+import com.ismail.creatvt.moderator.home.HomeActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity(), AuthManager.LoginCallback {
@@ -39,6 +40,8 @@ class LoginActivity : BaseActivity(), AuthManager.LoginCallback {
 
     override fun onLoginSuccess() {
         Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this, HomeActivity::class.java))
+        finish()
     }
 
     override fun onLoginFailed() {

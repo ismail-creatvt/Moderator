@@ -3,8 +3,7 @@ package com.ismail.creatvt.moderator.login
 import android.content.Intent
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
+import com.facebook.*
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -14,9 +13,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.facebook.FacebookException
 import com.facebook.login.LoginResult
-import com.facebook.FacebookCallback
 import com.google.firebase.auth.FacebookAuthProvider
 import com.ismail.creatvt.moderator.R
 
@@ -32,7 +29,7 @@ class AuthManager {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestProfile()
-                .requestIdToken(activity.getString(R.string.client_id))
+                .requestIdToken(activity.getString(R.string.server_client_id))
                 .build()
             val googleSignInClient = GoogleSignIn.getClient(activity, gso)
             activity.startActivityForResult(googleSignInClient.signInIntent, GOOGLE_SIGN_IN)
@@ -106,7 +103,7 @@ class AuthManager {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success")
-                        auth.currentUser
+                        auth.currentUser?.uid
                         loginCallback.onLoginSuccess()
                     } else {
                         // If sign in fails, display a message to the user.

@@ -11,6 +11,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import com.app.creatvt.interact.dpToPx
 import com.app.creatvt.interact.spToPx
 import com.ismail.creatvt.moderator.R
+import com.ismail.creatvt.moderator.customviews.data.BarData
 import kotlin.math.max
 
 class BarGraph @JvmOverloads constructor(
@@ -22,7 +23,7 @@ class BarGraph @JvmOverloads constructor(
         private val DEFAULT_MULTIPLIERS = arrayListOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
     }
 
-    private var newData: List<Pair<Int, Int>>? = null
+    private var newData: List<BarData>? = null
     private var animationPercentage: Float = 0f
     private var yBaseLine: Int = 0
     private var maxDown: Int = 0
@@ -30,7 +31,7 @@ class BarGraph @JvmOverloads constructor(
     private var stepYMultiplier: Int = 0
     private var barMargin = 0
     private var yStep: Int = 0
-    private var data: List<Pair<Int, Int>> = listOf()
+    private var data: List<BarData> = listOf()
     private val drawingArea = Rect()
     private val graphArea = Rect()
     private val upBarPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -83,12 +84,12 @@ class BarGraph @JvmOverloads constructor(
         downValueTextPaint.isFakeBoldText = true
     }
 
-    fun setData(data:List<Pair<Int, Int>>){
+    fun setData(data:List<BarData>){
         this.data = data
         animateBars()
     }
 
-    fun updateData(data:List<Pair<Int, Int>>){
+    fun updateData(data:List<BarData>){
         this.newData = this.data
         this.data = data
         animateBars()
@@ -137,8 +138,8 @@ class BarGraph @JvmOverloads constructor(
 
         if(data.isEmpty()) return
 
-        maxUp = data.maxBy { it.first }?.first?:0
-        maxDown = data.maxBy { it.second }?.second?:0
+        maxUp = data.maxBy { it.upValue }?.upValue?:0
+        maxDown = data.maxBy { it.downValue }?.downValue?:0
 
         calculateRects()
         calculateValues()
@@ -179,7 +180,7 @@ class BarGraph @JvmOverloads constructor(
     }
 
     private fun drawUpValue(canvas:Canvas?, index:Int, rect:Rect) {
-        val text = data[index].first.toString()
+        val text = data[index].upValue.toString()
         val textHeight = upValueTextPaint.fontMetrics.descent + upValueTextPaint.fontMetrics.ascent
         val textWidth = upValueTextPaint.measureText(text)
         val textX = rect.left.toFloat() + rect.width()/2 - textWidth/2
@@ -188,7 +189,7 @@ class BarGraph @JvmOverloads constructor(
     }
 
     private fun drawDownValue(canvas:Canvas?, index:Int, rect:Rect) {
-        val text = data[index].second.toString()
+        val text = data[index].downValue.toString()
         val textHeight = downValueTextPaint.fontMetrics.descent + downValueTextPaint.fontMetrics.ascent
         val textWidth = downValueTextPaint.measureText(text)
         val textX = rect.left.toFloat() + rect.width()/2 - textWidth/2
@@ -258,13 +259,13 @@ class BarGraph @JvmOverloads constructor(
 
             barRects[index].first.left = xPoint
             barRects[index].first.right = xPoint + barWidth.toInt()
-            barRects[index].first.top = yBaseLine - (item.first * pixelPerValue * animationPercentage).toInt()
+            barRects[index].first.top = yBaseLine - (item.upValue * pixelPerValue * animationPercentage).toInt()
             barRects[index].first.bottom = yBaseLine
 
             barRects[index].second.left = xPoint
             barRects[index].second.right = xPoint + barWidth.toInt()
             barRects[index].second.top = yBaseLine
-            barRects[index].second.bottom = yBaseLine + (item.second * pixelPerValue * animationPercentage).toInt()
+            barRects[index].second.bottom = yBaseLine + (item.downValue * pixelPerValue * animationPercentage).toInt()
         }
     }
 }

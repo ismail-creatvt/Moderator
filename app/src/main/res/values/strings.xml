@@ -5,7 +5,7 @@
 
     <string name="client_id">3292574286-im2okt4talr6mfever42d02qfumolemu.apps.googleusercontent.com</string>
     <string name="client_secret">68iBdz1GrQ7qto1gGeY5laf_</string>
-
+    <string name="server_client_id">3292574286-im2okt4talr6mfever42d02qfumolemu.apps.googleusercontent.com</string>
     <string name="facebook_app_id">1256214654768069</string>
     <string name="fb_login_protocol_scheme">fb1256214654768069</string>
     <string name="take_quiz">Take Quiz</string>
