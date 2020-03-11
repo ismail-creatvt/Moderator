@@ -27,9 +27,9 @@ class AuthManager {
 
         fun startGoogleLogin(activity:AppCompatActivity){
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(activity.getString(R.string.server_client_id))
                 .requestEmail()
                 .requestProfile()
-                .requestIdToken(activity.getString(R.string.server_client_id))
                 .build()
             val googleSignInClient = GoogleSignIn.getClient(activity, gso)
             activity.startActivityForResult(googleSignInClient.signInIntent, GOOGLE_SIGN_IN)
