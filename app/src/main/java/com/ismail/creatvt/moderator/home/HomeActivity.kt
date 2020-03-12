@@ -10,7 +10,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
 import com.ismail.creatvt.moderator.BaseActivity
 import com.ismail.creatvt.moderator.R
-import com.ismail.creatvt.moderator.SplashActivity
 import com.ismail.creatvt.moderator.customviews.data.BarData
 import com.ismail.creatvt.moderator.customviews.data.PieData
 import com.ismail.creatvt.moderator.login.LoginActivity
@@ -22,7 +21,7 @@ class HomeActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.ismail.creatvt.moderator.R.layout.activity_home)
+        setContentView(R.layout.activity_home)
 
         val user = FirebaseAuth.getInstance().currentUser
 
@@ -33,16 +32,16 @@ class HomeActivity : BaseActivity() {
             when {
                 provider.photoUrl.toString().contains("facebook.com") -> photoUrl = user.photoUrl!!.toString() + "?height=500"
                 provider.photoUrl.toString().contains("google.com") -> {
-                    photoUrl = user.photoUrl!!.toString()
-                    //Remove thumbnail url and replace the original part of the Url with the new part
-                    photoUrl = photoUrl.substring(0, photoUrl.length - 15) + "s400-c/photo.jpg"
-                }
+                photoUrl = user.photoUrl!!.toString()
+                //Remove thumbnail url and replace the original part of the Url with the new part
+                photoUrl = photoUrl.substring(0, photoUrl.length - 15) + "s400-c/photo.jpg"
+            }
                 else -> photoUrl = user.photoUrl!!.toString()
             }
             Glide.with(profile_image)
                 .load(photoUrl)
                 .apply(RequestOptions.circleCropTransform())
-                .placeholder(com.ismail.creatvt.moderator.R.drawable.dummy_profile_image)
+                .placeholder(R.drawable.dummy_profile_image)
                 .into(profile_image)
         }
 
