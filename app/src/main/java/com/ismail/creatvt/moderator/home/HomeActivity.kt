@@ -13,6 +13,7 @@ import com.ismail.creatvt.moderator.R
 import com.ismail.creatvt.moderator.customviews.data.BarData
 import com.ismail.creatvt.moderator.customviews.data.PieData
 import com.ismail.creatvt.moderator.login.LoginActivity
+import com.ismail.creatvt.moderator.quiz.QuizActivity
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.stats_bottom_view_layout.*
 
@@ -90,7 +91,7 @@ class HomeActivity : BaseActivity() {
                         })
                         return@setOnMenuItemClickListener true
                     }
-                    R.id.settings ->{
+                    R.id.settings -> {
                         return@setOnMenuItemClickListener true
                     }
                     else -> {
@@ -98,6 +99,10 @@ class HomeActivity : BaseActivity() {
                     }
                 }
             }
+        }
+
+        take_quiz_button.setOnClickListener{
+            startActivity(Intent(this, QuizActivity::class.java))
         }
     }
 
