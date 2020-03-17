@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/SplashTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".quiz.QuizActivity"></activity>
+        <activity android:name=".home.SelectCategoryActivity"></activity>
+        <activity android:name=".quiz.QuizActivity" />
         <activity android:name=".home.HomeActivity" />
         <activity android:name=".FacebookDeepLinkActivity">
             <intent-filter>

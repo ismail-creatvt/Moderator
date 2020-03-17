@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.ScrollView
+import com.app.creatvt.interact.dpToPx
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -13,12 +15,13 @@ import com.ismail.creatvt.moderator.R
 import com.ismail.creatvt.moderator.customviews.data.BarData
 import com.ismail.creatvt.moderator.customviews.data.PieData
 import com.ismail.creatvt.moderator.login.LoginActivity
-import com.ismail.creatvt.moderator.quiz.QuizActivity
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.stats_bottom_view_layout.*
 
 
 class HomeActivity : BaseActivity() {
+
+    private var bottomSheetBehavior:BottomSheetBehavior<ScrollView>?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,18 +67,24 @@ class HomeActivity : BaseActivity() {
         )
         pie_chart.setData(pieData)
 
-        val bottomSheetBehavior = BottomSheetBehavior.from(stats_root)
-        bottomSheetBehavior.addBottomSheetCallback(object:
+        bottomSheetBehavior = BottomSheetBehavior.from(stats_root)
+        bottomSheetBehavior?.addBottomSheetCallback(object:
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                quiz_options.scaleX = 1f - slideOffset
-                quiz_options.scaleY = 1f - slideOffset
+                take_quiz_button.alpha = 1f - slideOffset
+                take_quiz_button.translationY = dpToPx(this@HomeActivity, 120f) * slideOffset
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if(newState == BottomSheetBehavior.STATE_COLLAPSED){
+                    pie_chart.visibility = View.INVISIBLE
+                } else if(newState == BottomSheetBehavior.STATE_EXPANDED){
+                    pie_chart.visibility = View.VISIBLE
+                }
             }
 
         })
+        stats_root.setBottomSheetBehavior(bottomSheetBehavior!!)
 
         more_options.setOnClickListener {
             val moreOptionsPopup = PopupMenu(this, more_options)
@@ -102,7 +111,15 @@ class HomeActivity : BaseActivity() {
         }
 
         take_quiz_button.setOnClickListener{
-            startActivity(Intent(this, QuizActivity::class.java))
+            startActivity(Intent(this, SelectCategoryActivity::class.java))
+        }
+    }
+
+    override fun onBackPressed() {
+        if(bottomSheetBehavior?.state == BottomSheetBehavior.STATE_EXPANDED){
+            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+        } else{
+            super.onBackPressed()
         }
     }
 

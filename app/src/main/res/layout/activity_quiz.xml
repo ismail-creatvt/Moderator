@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/option_box_background"
+    android:background="@color/colorBlue"
     tools:context=".quiz.QuizActivity">
 
     <ProgressBar
@@ -14,16 +14,18 @@
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:indeterminate="false"
         android:progress="10"
-        android:backgroundTint="@color/colorLightGreen"
+        android:progressDrawable="@drawable/quiz_progress_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
+        android:id="@+id/question_fragment"
         android:name="com.ismail.creatvt.moderator.quiz.QuestionFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        tools:layout="@layout/fragment_question"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

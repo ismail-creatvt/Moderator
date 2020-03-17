@@ -5,7 +5,11 @@
     <color name="colorAccent">#0DCD71</color>
 
     <color name="textColorDark">#0d0d0d</color>
+    <color name="textColorNormal">#2f2f2f</color>
     <color name="textColorLight">#A5A5A5</color>
     <color name="colorBlue">#4392F1</color>
     <color name="colorLightGreen">#00AC26</color>
+    <color name="colorDarkBlue">#478DE0</color>
+    <color name="colorRed">#FF2D21</color>
+    <color name="lightWhite">#F5F5F5</color>
 </resources>

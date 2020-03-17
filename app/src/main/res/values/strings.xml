@@ -20,7 +20,8 @@
     <string name="level_1">Level 1</string>
     <string name="ismail_shaikh">Ismail Shaikh</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="question_demo"><![CDATA[What will be the output of the program?\n#include<stdio.h>\n#include<stdarg.h>\nvoid fun1(char, int, int *, float *, char *);\nvoid fun2(char ch, …);\nvoid (*p1)(char, int, int *, float *, char *);\nvoid (*p2)(char ch, ...);\nint main()\n{\n    char ch=\'A\';\n int i=10;\n    float f=3.14;\n char *p=\"Hello\";\n    p1=fun1;\n    p2=fun2;\n    (*p1)(ch, i, &i, &f, p);\n    (*p2)(ch, i, &i, &f, p);\n    return 0;\n}\nvoid fun1(char ch, int i, int *pi, float *pf, char *p)\n{\n    printf(\\\"%c %d %d %f %s \\\\n\\\", ch, i, *pi, *pf, p);\\n}\\nvoid fun2(char ch, ...)\\n{\\n    int i, *pi; float *pf; char *p;\\n    va_list list;\\n    printf(\\\"%c \\\", ch);\\n    va_start(list, ch);\\n    i = va_arg(list, int);\\n    printf(\\\"%d \\\", i);\\n        pi = va_arg(list, int*);\\n    printf(\\\"%d \\\", *pi);\\n    pf = va_arg(list, float*);\\n    printf(\\\"%f \\\", *pf);\\n    p = va_arg(list, char *);\\n    printf(\\\"%s\\\", p);\\n}\\n]]></string>
+    <string name="select_category">Select category</string>
+    <string name="category">Category</string>
 
 </resources>
