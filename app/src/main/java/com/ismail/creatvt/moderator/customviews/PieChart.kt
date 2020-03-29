@@ -5,13 +5,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
+import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import com.app.creatvt.interact.getColorCompat
+import com.app.creatvt.interact.getHeight
+import com.ismail.creatvt.moderator.R
 import com.ismail.creatvt.moderator.customviews.data.PieData
 import kotlin.math.cos
 import kotlin.math.max
@@ -21,9 +23,15 @@ import kotlin.math.sin
 class PieChart @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr), ValueAnimator.AnimatorUpdateListener, GestureDetector.OnGestureListener {
+    private var noDataPieColor: Int = 0
+    private var noDataText: String = ""
     private var touchPoint: Point?=null
     private var touchPath = Path()
     private var animationPercentage: Float = 0f
+    private var tempPath = Path()
+
+    private var noDataTextPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
+    private var valueTextPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     private val gestureDetector = GestureDetector(context, this)
     private var data = listOf<PieData>()
@@ -39,6 +47,35 @@ class PieChart @JvmOverloads constructor(
         this.data = data
         animatePie()
     }
+
+    init {
+        val a = context.obtainStyledAttributes(attrs, R.styleable.PieChart, defStyleAttr, 0)
+
+        valueTextPaint.color = a.getColor(
+            R.styleable.PieChart_pc_valueTextColor,
+            context.getColorCompat(R.color.defaultValueTextColor)
+        )
+        valueTextPaint.textSize = a.getDimension(
+            R.styleable.PieChart_pc_valueTextSize,
+            resources.getDimension(R.dimen.defaultValueTextSize)
+        )
+
+        noDataTextPaint.color = a.getColor(
+            R.styleable.PieChart_pc_noDataTextColor,
+            context.getColorCompat(R.color.defaultNoDataTextColor)
+        )
+        noDataTextPaint.textSize = a.getDimension(
+            R.styleable.PieChart_pc_noDataTextSize,
+            resources.getDimension(R.dimen.defaultNoDataTextSize)
+        )
+
+        noDataPieColor = a.getColor(R.styleable.PieChart_pc_noDataPieColor, 0xff333333.toInt())
+        noDataText = a.getString(R.styleable.PieChart_pc_noDataText)
+            ?: resources.getString(R.string.no_data_available)
+
+        a.recycle()
+    }
+
     private fun animatePie() {
         ValueAnimator.ofFloat(0f, 1f).apply {
             addUpdateListener(this@PieChart)
@@ -47,11 +84,6 @@ class PieChart @JvmOverloads constructor(
             interpolator = AccelerateDecelerateInterpolator()
             start()
         }
-    }
-
-    override fun onVisibilityChanged(changedView: View, visibility: Int) {
-        super.onVisibilityChanged(changedView, visibility)
-        animatePie()
     }
 
     override fun onAnimationUpdate(animation: ValueAnimator?) {
@@ -70,33 +102,74 @@ class PieChart @JvmOverloads constructor(
             total += item.value
         }
 
+        if (total == 0) {
+            canvas?.save()
+            clipInnerCircle(canvas)
+            piePaint.color = noDataPieColor
+            createSlicePath(0f, 1, 1, true)
+            canvas?.drawPath(slicePath, piePaint)
+            canvas?.restore()
+            val noDataTextWidth = noDataTextPaint.measureText(noDataText)
+            canvas?.drawText(
+                noDataText,
+                innerRect.centerX() - noDataTextWidth / 2f,
+                innerRect.centerY() - noDataTextPaint.getHeight() / 2f,
+                noDataTextPaint
+            )
+            return
+        }
         canvas?.save()
 
-        innerClipPath.reset()
-        innerClipPath.addCircle(width/2f, height/2f, innerRect.width()/2f, Path.Direction.CW)
-        if(Build.VERSION.SDK_INT >= 26){
-            canvas?.clipOutPath(innerClipPath)
-        } else{
-            canvas?.clipPath(innerClipPath)
-        }
+        clipInnerCircle(canvas)
         var totalAngle = 0f
 
         data.forEach { item ->
-            var angle = createSlicePath(totalAngle, item.value, total, true)
+            var small = true
+            var angle = createSlicePath(totalAngle, item.value, total, small)
             createTouchPath()
-            touchPath.op(slicePath, Path.Op.DIFFERENCE)
+            tempPath.reset()
+            tempPath.set(slicePath)
+            tempPath.op(innerClipPath, Path.Op.DIFFERENCE)
+            touchPath.op(tempPath, Path.Op.DIFFERENCE)
             piePaint.color = item.color
             if(touchPath.isEmpty && touchPoint != null){
-                angle = createSlicePath(totalAngle, item.value, total, false)
+                small = false
+                angle = createSlicePath(totalAngle, item.value, total, small)
                 canvas?.drawPath(slicePath, piePaint)
                 touchPoint = null
             } else{
                 canvas?.drawPath(slicePath, piePaint)
             }
+            if (animationPercentage == 1f && item.value > 0) {
+                val crossSectionWidth =
+                    if (!small) (drawingRect.width() - innerRect.width()) / 2f else (outerRect.width() - innerRect.width()) / 2f
+                val radius = innerRect.width() / 2f + crossSectionWidth / 2f
+                val textX =
+                    outerRect.centerX() + radius * sin(Math.toDegrees(totalAngle + angle / 2.0)).toFloat()
+                val textY =
+                    outerRect.centerY() + radius * cos(Math.toDegrees(totalAngle + angle / 2.0)).toFloat()
+                val textWidth = valueTextPaint.measureText(item.value.toString())
+                canvas?.drawText(
+                    item.value.toString(),
+                    textX - textWidth,
+                    textY - valueTextPaint.getHeight(),
+                    valueTextPaint
+                )
+            }
             totalAngle += angle
         }
 
         canvas?.restore()
+    }
+
+    private fun clipInnerCircle(canvas: Canvas?) {
+        innerClipPath.reset()
+        innerClipPath.addCircle(width / 2f, height / 2f, innerRect.width() / 2f, Path.Direction.CW)
+        if (Build.VERSION.SDK_INT >= 26) {
+            canvas?.clipOutPath(innerClipPath)
+        } else {
+            canvas?.clipPath(innerClipPath)
+        }
     }
 
     private fun createTouchPath() {
@@ -117,7 +190,10 @@ class PieChart @JvmOverloads constructor(
         val yOuter = outerRect.centerY() + radius * cos(startAngle)
         slicePath.moveTo(outerRect.centerX(), outerRect.centerY())
         slicePath.lineTo(xOuter, yOuter)
-        val angle = ((value.toFloat()/totalValue.toFloat()) * 360f) * animationPercentage
+        var angle = ((value.toFloat() / totalValue.toFloat()) * 360f) * animationPercentage
+        if (angle == 360f) {
+            angle = 359.9f
+        }
         slicePath.arcTo(if(small) outerRect else drawingRect, startAngle, angle, true)
         slicePath.lineTo(outerRect.centerX(), outerRect.centerY())
         slicePath.close()
@@ -131,15 +207,6 @@ class PieChart @JvmOverloads constructor(
 
     override fun onShowPress(p0: MotionEvent?) {
 
-    }
-
-    fun vibrate(){
-        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if(Build.VERSION.SDK_INT >= 26){
-            vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
-        } else{
-            vibrator.vibrate(2000)
-        }
     }
 
     override fun onSingleTapUp(p0: MotionEvent?): Boolean {

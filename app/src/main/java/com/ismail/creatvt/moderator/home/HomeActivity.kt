@@ -1,33 +1,57 @@
 package com.ismail.creatvt.moderator.home
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.PopupMenu
-import android.widget.ScrollView
+import android.widget.FrameLayout
 import com.app.creatvt.interact.dpToPx
+import com.app.creatvt.interact.getColorCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.ismail.creatvt.moderator.BaseActivity
 import com.ismail.creatvt.moderator.R
 import com.ismail.creatvt.moderator.customviews.data.BarData
 import com.ismail.creatvt.moderator.customviews.data.PieData
+import com.ismail.creatvt.moderator.home.categories.SelectCategoryActivity
+import com.ismail.creatvt.moderator.home.categories.SelectCategoryActivity.Companion.SELECTED_CATEGORY
+import com.ismail.creatvt.moderator.home.categories.SelectCategoryActivity.Companion.TAKE_QUIZ
 import com.ismail.creatvt.moderator.login.LoginActivity
+import com.ismail.creatvt.moderator.utility.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.stats_bottom_view_layout.*
+import java.util.*
 
 
 class HomeActivity : BaseActivity() {
 
-    private var bottomSheetBehavior:BottomSheetBehavior<ScrollView>?=null
+    private var pieListener: ValueEventListener? = null
+    private var barEventListeners: HashMap<String, ValueEventListener>? = null
+    private var oldCategory: String? = null
+    private var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>? = null
+    private var category: String = ""
+
+    companion object {
+        private const val SELECT_CATEGORY_REQUEST = 2
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         val user = FirebaseAuth.getInstance().currentUser
+
+        val prefs = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+        category = prefs.getString(SELECTED_CATEGORY, CATEGORY_ALL) ?: ""
+
+        category_button.text = category
 
         if(user != null){
             display_name.text = user.displayName
@@ -50,68 +74,107 @@ class HomeActivity : BaseActivity() {
         }
 
         val data = listOf(
-            BarData(10, 30),
-            BarData(20, 50),
-            BarData(30, 33),
-            BarData(45, 10),
-            BarData(20, 20),
-            BarData(15, 15),
-            BarData(5, 36)
+            BarData(0, 0),
+            BarData(0, 0),
+            BarData(0, 0),
+            BarData(0, 0),
+            BarData(0, 0),
+            BarData(0, 0),
+            BarData(0, 0)
         )
         bar_graph.setData(data)
-
-        val pieData = listOf(
-            PieData(0xffff0000.toInt(), 10),
-            PieData(0xff00ff00.toInt(), 30),
-            PieData(0xff0000ff.toInt(), 50)
-        )
-        pie_chart.setData(pieData)
-
+        setPieValues(Pair(0, 0))
+        setBarGraphData()
+        setPieData()
         bottomSheetBehavior = BottomSheetBehavior.from(stats_root)
+        bottomSheetBehavior?.peekHeight = (windowManager.getScreenHeight() * 0.6f).toInt()
         bottomSheetBehavior?.addBottomSheetCallback(object:
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 take_quiz_button.alpha = 1f - slideOffset
                 take_quiz_button.translationY = dpToPx(this@HomeActivity, 120f) * slideOffset
+                pie_chart.alpha = slideOffset
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if(newState == BottomSheetBehavior.STATE_COLLAPSED){
-                    pie_chart.visibility = View.INVISIBLE
-                } else if(newState == BottomSheetBehavior.STATE_EXPANDED){
-                    pie_chart.visibility = View.VISIBLE
-                }
             }
 
         })
+
+        FirebaseDatabase.getInstance().getReference(SCORES_KEY)
+            .child(FirebaseAuth.getInstance().currentUser?.uid ?: "")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+                override fun onDataChange(scoreSnapshot: DataSnapshot) {
+                    val score = scoreSnapshot.getValue(Int::class.java) ?: 0
+                    level_value.text = getString(R.string.level_1, (score / 1000))
+                    score_value.text = score.toString()
+                }
+            })
+
         stats_root.setBottomSheetBehavior(bottomSheetBehavior!!)
 
-        more_options.setOnClickListener {
-            val moreOptionsPopup = PopupMenu(this, more_options)
-            moreOptionsPopup.inflate(R.menu.more_option_menu)
-            moreOptionsPopup.show()
-            moreOptionsPopup.setOnMenuItemClickListener {
-                when(it.itemId){
-                    R.id.logout ->{
-                        FirebaseAuth.getInstance().signOut()
-                        startActivity(Intent(this@HomeActivity, LoginActivity::class.java).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        })
-                        return@setOnMenuItemClickListener true
-                    }
-                    R.id.settings -> {
-                        return@setOnMenuItemClickListener true
-                    }
-                    else -> {
-                        return@setOnMenuItemClickListener false
-                    }
-                }
+        logout_button.setOnClickListener {
+            showYesNoDialog(getString(R.string.do_you_want_to_logout)) {
+                FirebaseAuth.getInstance().signOut()
+                startActivity(Intent(this@HomeActivity, LoginActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                })
             }
         }
 
         take_quiz_button.setOnClickListener{
-            startActivity(Intent(this, SelectCategoryActivity::class.java))
+            startActivity(Intent(this, SelectCategoryActivity::class.java).apply {
+                putExtra(TAKE_QUIZ, true)
+            })
+        }
+
+        edit_category_button.setOnClickListener {
+            startActivityForResult(
+                Intent(this, SelectCategoryActivity::class.java),
+                SELECT_CATEGORY_REQUEST
+            )
+        }
+
+    }
+
+    private fun setPieValues(pair: Pair<Int, Int>) {
+        val pieData = listOf(
+            PieData(getColorCompat(PIE_COLOR_WINS), pair.first),
+            PieData(getColorCompat(PIE_COLOR_LOSSES), pair.second)
+        )
+        pie_chart.setData(pieData)
+    }
+
+    private fun setPieData() {
+        pieListener = getPieValues(category, {
+            setPieValues(it)
+        }, oldCategory, pieListener)
+    }
+
+    private fun setBarGraphData() {
+        barEventListeners = getLastSevenDayValues(this, category, {
+            runOnUiThread {
+                bar_graph.setData(it)
+            }
+        }, oldCategory, barEventListeners)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == SELECT_CATEGORY_REQUEST && resultCode == Activity.RESULT_OK) {
+            oldCategory = category
+            category = data?.getStringExtra(SELECTED_CATEGORY) ?: ""
+            category_button.text = category
+            getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+                .edit().putString(SELECTED_CATEGORY, category).apply()
+            setBarGraphData()
+            setPieData()
         }
     }
 

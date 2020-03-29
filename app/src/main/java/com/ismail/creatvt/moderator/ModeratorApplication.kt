@@ -2,6 +2,7 @@ package com.ismail.creatvt.moderator
 
 import android.app.Application
 import com.google.firebase.FirebaseApp
+import com.google.firebase.database.FirebaseDatabase
 
 class ModeratorApplication: Application() {
 
@@ -9,5 +10,7 @@ class ModeratorApplication: Application() {
         super.onCreate()
 
         FirebaseApp.initializeApp(this)
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
     }
 }

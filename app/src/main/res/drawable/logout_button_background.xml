@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <size
+                android:width="56dp"
+                android:height="56dp" />
+            <solid android:color="@color/colorRed" />
+            <corners android:bottomLeftRadius="56dp" />
+        </shape>
+    </item>
+    <item
+        android:bottom="24dp"
+        android:drawable="@drawable/ic_exit_to_app_black_24dp"
+        android:left="24dp"
+        android:right="8dp"
+        android:top="8dp" />
+</layer-list>

@@ -14,8 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/SplashTheme"
+        android:fullBackupContent="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".home.SelectCategoryActivity"></activity>
+        <activity android:name=".quiz.ResultActivity" />
+        <activity android:name=".home.categories.SelectCategoryActivity" />
         <activity android:name=".quiz.QuizActivity" />
         <activity android:name=".home.HomeActivity" />
         <activity android:name=".FacebookDeepLinkActivity">

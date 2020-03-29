@@ -120,6 +120,7 @@ class BarGraph @JvmOverloads constructor(
             for(multiplier in multipliers){
                 if((multiplier * (noOfLines - 1)) >= maxValue){
                     stepYMultiplier = multiplier
+                    break
                 }
             }
             if(stepYMultiplier != 0) break
@@ -207,6 +208,9 @@ class BarGraph @JvmOverloads constructor(
         arcRect.bottom = rect.top.toFloat() + rect.width()
         arcRect.top = rect.top.toFloat()
 
+        if (arcRect.bottom > rect.bottom) {
+            arcRect.bottom = rect.bottom.toFloat()
+        }
         barPath.arcTo(arcRect, 180f, 180f, true)
         barPath.lineTo(rect.right.toFloat(), rect.bottom.toFloat())
         barPath.lineTo(rect.left.toFloat(), rect.bottom.toFloat())
@@ -223,6 +227,9 @@ class BarGraph @JvmOverloads constructor(
         arcRect.bottom = rect.bottom.toFloat()
         arcRect.top = rect.bottom.toFloat() - rect.width()
 
+        if (arcRect.top < rect.top) {
+            arcRect.top = rect.top.toFloat()
+        }
         barPath.arcTo(arcRect, 180f, -180f, true)
         barPath.lineTo(rect.right.toFloat(), rect.top.toFloat())
         barPath.lineTo(rect.left.toFloat(), rect.top.toFloat())

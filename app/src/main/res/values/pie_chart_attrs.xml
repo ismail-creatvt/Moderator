@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PieChart">
+        <attr name="pc_noDataTextColor" format="color" />
+        <attr name="pc_noDataTextSize" format="dimension" />
+        <attr name="pc_valueTextColor" format="color" />
+        <attr name="pc_valueTextSize" format="dimension" />
+        <attr name="pc_noDataText" format="string" />
+        <attr name="pc_noDataPieColor" format="color" />
+    </declare-styleable>
+
+    <dimen name="defaultValueTextSize">16sp</dimen>
+    <color name="defaultValueTextColor">#494949</color>
+    <color name="defaultNoDataTextColor">#FF8400</color>
+    <dimen name="defaultNoDataTextSize">18sp</dimen>
+</resources>

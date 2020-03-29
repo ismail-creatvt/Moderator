@@ -3,10 +3,10 @@
     <string name="app_name">Moderator</string>
     <string name="or">OR</string>
 
-    <string name="client_id">3292574286-im2okt4talr6mfever42d02qfumolemu.apps.googleusercontent.com</string>
-    <string name="client_secret">68iBdz1GrQ7qto1gGeY5laf_</string>
-    <string name="server_client_id">3292574286-0ntnnl1shejmk5l5o8lalme1pqpcnvp6.apps.googleusercontent.com</string>
-    <string name="google_service_client_id">3292574286-0ntnnl1shejmk5l5o8lalme1pqpcnvp6.apps.googleusercontent.com</string>
+    <string name="client_id" translatable="false">3292574286-im2okt4talr6mfever42d02qfumolemu.apps.googleusercontent.com</string>
+    <string name="client_secret" translatable="false">68iBdz1GrQ7qto1gGeY5laf_</string>
+    <string name="server_client_id" translatable="false">3292574286-0ntnnl1shejmk5l5o8lalme1pqpcnvp6.apps.googleusercontent.com</string>
+    <string name="google_service_client_id" translatable="false">3292574286-0ntnnl1shejmk5l5o8lalme1pqpcnvp6.apps.googleusercontent.com</string>
 
     <string name="facebook_app_id">1256214654768069</string>
     <string name="fb_login_protocol_scheme">fb1256214654768069</string>
@@ -17,11 +17,31 @@
     <string name="profile_image">Profile Image</string>
     <string name="level_badge">Level Badge</string>
     <string name="more_options">More Options</string>
-    <string name="level_1">Level 1</string>
+    <string name="level_1">Level %1$d</string>
     <string name="ismail_shaikh">Ismail Shaikh</string>
 
-    <string name="question_demo"><![CDATA[What will be the output of the program?\n#include<stdio.h>\n#include<stdarg.h>\nvoid fun1(char, int, int *, float *, char *);\nvoid fun2(char ch, …);\nvoid (*p1)(char, int, int *, float *, char *);\nvoid (*p2)(char ch, ...);\nint main()\n{\n    char ch=\'A\';\n int i=10;\n    float f=3.14;\n char *p=\"Hello\";\n    p1=fun1;\n    p2=fun2;\n    (*p1)(ch, i, &i, &f, p);\n    (*p2)(ch, i, &i, &f, p);\n    return 0;\n}\nvoid fun1(char ch, int i, int *pi, float *pf, char *p)\n{\n    printf(\\\"%c %d %d %f %s \\\\n\\\", ch, i, *pi, *pf, p);\\n}\\nvoid fun2(char ch, ...)\\n{\\n    int i, *pi; float *pf; char *p;\\n    va_list list;\\n    printf(\\\"%c \\\", ch);\\n    va_start(list, ch);\\n    i = va_arg(list, int);\\n    printf(\\\"%d \\\", i);\\n        pi = va_arg(list, int*);\\n    printf(\\\"%d \\\", *pi);\\n    pf = va_arg(list, float*);\\n    printf(\\\"%f \\\", *pf);\\n    p = va_arg(list, char *);\\n    printf(\\\"%s\\\", p);\\n}\\n]]></string>
+    <string name="question_demo"><![CDATA[What will be the output of the program?\n#include<stdio.h>\n#include<stdarg.h>\nvoid fun1(char, int, int *, float *, char *);\nvoid fun2(char ch, …);\nvoid (*p1)(char, int, int *, float *, char *);\nvoid (*p2)(char ch, …);\nint main()\n{\n    char ch=\'A\';\n int i=10;\n    float f=3.14;\n char *p=\"Hello\";\n    p1=fun1;\n    p2=fun2;\n    (*p1)(ch, i, &i, &f, p);\n    (*p2)(ch, i, &i, &f, p);\n    return 0;\n}\nvoid fun1(char ch, int i, int *pi, float *pf, char *p)\n{\n    printf(\\\"%c %d %d %f %s \\\\n\\\", ch, i, *pi, *pf, p);\\n}\\nvoid fun2(char ch, …)\\n{\\n    int i, *pi; float *pf; char *p;\\n    va_list list;\\n    printf(\\\"%c \\\", ch);\\n    va_start(list, ch);\\n    i = va_arg(list, int);\\n    printf(\\\"%d \\\", i);\\n        pi = va_arg(list, int*);\\n    printf(\\\"%d \\\", *pi);\\n    pf = va_arg(list, float*);\\n    printf(\\\"%f \\\", *pf);\\n    p = va_arg(list, char *);\\n    printf(\\\"%s\\\", p);\\n}\\n]]></string>
     <string name="select_category">Select category</string>
     <string name="category">Category</string>
+    <string name="loading_categories">Loading categories…</string>
+    <string name="ratio">%1$d/%2$d</string>
+    <string name="timeout">Timeout</string>
+    <string name="do_you_want_to_quit">Do you want to quit?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="saving_score">Saving score…</string>
+    <string name="hurray_you_won">Hurray!!… You Won</string>
+    <string name="error_while_saving_data">Error while saving data!</string>
+    <string name="oops_you_lost">Oops!!… You Lost</string>
+    <string name="no_data_available">No data available</string>
+    <string name="do_you_want_to_logout">Do you want to logout?</string>
+    <string name="score">Score</string>
+    <string name="wins">Wins</string>
+    <string name="losses">Losses</string>
+    <string name="logo">Logo</string>
+    <string name="smiley_face">Smiley Face</string>
+    <string name="close">Close</string>
+    <string name="edit">Edit</string>
+    <string name="logout">Logout</string>
 
 </resources>

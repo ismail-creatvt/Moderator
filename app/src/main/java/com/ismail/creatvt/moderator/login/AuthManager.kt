@@ -3,18 +3,21 @@ package com.ismail.creatvt.moderator.login
 import android.content.Intent
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.facebook.*
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
 import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.facebook.login.LoginResult
-import com.google.firebase.auth.FacebookAuthProvider
 import com.ismail.creatvt.moderator.R
 
 
@@ -27,7 +30,7 @@ class AuthManager {
 
         fun startGoogleLogin(activity:AppCompatActivity){
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(activity.getString(R.string.server_client_id))
+                .requestIdToken(activity.getString(R.string.default_web_client_id))
                 .requestEmail()
                 .requestProfile()
                 .build()

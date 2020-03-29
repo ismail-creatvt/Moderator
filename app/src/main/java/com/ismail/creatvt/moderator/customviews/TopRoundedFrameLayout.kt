@@ -6,14 +6,13 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
-import android.widget.ScrollView
-import com.app.creatvt.interact.dpToPx
+import android.widget.FrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.ismail.creatvt.moderator.R
 
-class TopRoundedScrollView @JvmOverloads constructor(
+class TopRoundedFrameLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ScrollView(context, attrs, defStyleAttr) {
+) : FrameLayout(context, attrs, defStyleAttr) {
     private var animationPercentage: Float = 1f
 
     var cornerRadius:Float = 0f
@@ -39,9 +38,10 @@ class TopRoundedScrollView @JvmOverloads constructor(
 
     }
     init {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.TopRoundedScrollView)
-        cornerRadius = a.getDimension(R.styleable.TopRoundedScrollView_trsv_cornerRadius, 0f)
-        mPaint.color = a.getColor(R.styleable.TopRoundedScrollView_trsv_backgroundColor, 0xffffffff.toInt())
+        val a = context.obtainStyledAttributes(attrs, R.styleable.TopRoundedFrameLayout)
+        cornerRadius = a.getDimension(R.styleable.TopRoundedFrameLayout_trsv_cornerRadius, 0f)
+        mPaint.color =
+            a.getColor(R.styleable.TopRoundedFrameLayout_trsv_backgroundColor, 0xffffffff.toInt())
         mPaint.style = Paint.Style.FILL
         a.recycle()
         setWillNotDraw(false)

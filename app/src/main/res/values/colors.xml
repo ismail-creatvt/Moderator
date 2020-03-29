@@ -12,4 +12,8 @@
     <color name="colorDarkBlue">#478DE0</color>
     <color name="colorRed">#FF2D21</color>
     <color name="lightWhite">#F5F5F5</color>
+    <color name="transparentGray">#27000000</color>
+    <color name="textColorWhite">#f2f2f2</color>
+    <color name="lostBackgroundColor">#232323</color>
+    <color name="lightGray">#C3C3C3</color>
 </resources>

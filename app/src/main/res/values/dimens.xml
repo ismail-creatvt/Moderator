@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="profileImageSize">100dp</dimen>
+    <dimen name="profileImageCorner">50dp</dimen>
+    <dimen name="levelCardHeight">40dp</dimen>
+    <dimen name="text_size_x_small">12sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_x_large">24sp</dimen>
+    <dimen name="levelCardCornerRadius">20dp</dimen>
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_normal">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_semi_large">20dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_xlarge">32dp</dimen>
+    <dimen name="graph_height">240dp</dimen>
+    <dimen name="level_badge_size">24dp</dimen>
+</resources>

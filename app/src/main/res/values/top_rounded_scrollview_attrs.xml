@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="TopRoundedScrollView">
+    <declare-styleable name="TopRoundedFrameLayout">
         <attr name="trsv_backgroundColor" format="color"/>
         <attr name="trsv_cornerRadius" format="dimension"/>
     </declare-styleable>

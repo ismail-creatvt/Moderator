@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/category_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/category_root"
-    tools:context=".home.SelectCategoryActivity"
-    android:background="@color/colorBlue">
+    android:background="@color/colorBlue"
+    tools:context=".home.categories.SelectCategoryActivity">
 
     <TextView
         android:id="@+id/textView5"
@@ -15,8 +15,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:text="@string/select_category"
-        android:textSize="18sp"
         android:textColor="@android:color/white"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:contentDescription="@string/close"
         app:layout_constraintBottom_toBottomOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView5"
@@ -43,4 +44,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         tools:listitem="@layout/category_item" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:text="@string/loading_categories"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_x_large"
+        app:layout_constraintBottom_toBottomOf="@+id/loading"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loading"
+        app:layout_constraintTop_toTopOf="@+id/loading" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/loading_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="textView3,loading"
+        tools:layout_editor_absoluteY="390dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
